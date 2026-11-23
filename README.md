@@ -58,4 +58,4 @@ Les ressources sont dans `src/blackout/assets/` :
 | ZAATOUT Chamssedine | 20252248 | Moteur de rendu, lancer de rayons |
 | HAJJY Hamza | 20251554 | Boucle de jeu, joueur, interface, sprites |
 | ABBA Maximilien | 20250212 | Labyrinthe, génération, étages, objets |
-| COUTE Noham | à compléter | Monstre, recherche de chemin, machine à états |
+| COUTE Noham | 20251584| Monstre, recherche de chemin, machine à états |

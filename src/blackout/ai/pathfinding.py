@@ -1,5 +1,5 @@
 # Auteur : Noham
-"""Recherche du bon chemin."""
+"""Recherche de chemin."""
 
 import heapq
 
@@ -9,7 +9,11 @@ from blackout.world.maze import Maze
 def find_path(
     maze: Maze, start: tuple[int, int], goal: tuple[int, int]
 ) -> list[tuple[int, int]]:
-    
+    """Renvoie le plus court chemin avec A*, start et goal compris.
+
+    Renvoie [start] si start == goal, et une liste vide s'il n'y a aucun chemin.
+    Le voisinage vient uniquement de maze.neighbours().
+    """
     cost = {start: 0}
     came_from = {start: None}
     heap = [(0, start)]
@@ -39,5 +43,3 @@ def find_path(
         case = came_from[case]
     path.reverse()
     return path
-    
-    raise NotImplementedError
