@@ -46,7 +46,7 @@ def draw_minimap(
 
     pygame.draw.line(surface, COULEUR_JOUEUR, (pos_x, pos_y), (bout_x, bout_y), 1)
 
-    # dessin du monstre, s'il y en a un (Noham)
+    # on dessine le monstre en point vert, s'il y en a un (Noham)
     if monster is not None:
         monstre_x = int(monster.x * TAILLE_CASE)
         monstre_y = int(monster.y * TAILLE_CASE)

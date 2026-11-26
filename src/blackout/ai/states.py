@@ -38,7 +38,7 @@ class ChaseState(MonsterState):
     """Le monstre poursuit le joueur en suivant le chemin donné par A*."""
 
     def __init__(self) -> None:
-        # Case du joueur lors du dernier calcul de chemin (None = jamais calculé).
+        # Retient la case du joueur au dernier calcul, None au départ parce qu'on n'a encore jamais calculé de chemin.
         self.player_cell: tuple[int, int] | None = None
 
     def update(
@@ -48,12 +48,12 @@ class ChaseState(MonsterState):
         monster_cell = (int(monster.x), int(monster.y))
         player_cell = (int(player.x), int(player.y))
 
-        # Optimisation : A* n'est relancé que si le joueur a changé de case
-        # ou si le chemin est vide, et pas à chaque image.
+        # On relance A* seulement quand le joueur change de case ou que le chemin est vide.
+        # Sinon on le calculerait 60 fois par seconde pour trouver le même chemin.
         if player_cell != self.player_cell or not monster.path:
             monster.path = find_path(maze, monster_cell, player_cell)
             self.player_cell = player_cell
-            # Le chemin commence par la case du monstre : il y est déjà.
+            # On retire la première case du chemin parce que le monstre est déjà dessus.
             if monster.path and monster.path[0] == monster_cell:
                 monster.path.pop(0)
 
@@ -74,12 +74,13 @@ class ChaseState(MonsterState):
         step = monster.speed * dt
 
         if distance <= step:
-            # Centre atteint : on s'y place et on retire la case du chemin.
+            # Il arrive au centre de la case : on le pose dessus et on enlève la case du chemin.
             monster.x = target_x
             monster.y = target_y
             monster.path.pop(0)
         else:
-            # On avance de step dans la direction de la cible.
+            # Il avance d'un pas vers la case sans se téléporter.
+            # Diviser par distance garde seulement la direction, step donne la longueur du pas.
             monster.x += dx / distance * step
             monster.y += dy / distance * step
 
