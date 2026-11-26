@@ -6,7 +6,9 @@ from enum import Enum, auto
 import pygame
 
 from blackout import config
-from blackout.entities.player import Player #classe du joueur 
+from blackout.ai.states import ChaseState  # état de poursuite du monstre (Noham)
+from blackout.entities.monster import Monster  # classe du monstre (Noham)
+from blackout.entities.player import Player #classe du joueur
 from blackout.ui.minimap import draw_minimap #fonction qui dessine la carte 
 from blackout.world.maze import Maze #classe du labyrinthe
 
@@ -32,6 +34,8 @@ class Game:
         
         self.maze = Maze.from_file(config.TEST_MAP)  #charge la carte de test
         self.player = Player(1.5, 1.5)     #joueur au centtre de la case (1, 1)
+        # Monstre au centre de la case (7, 7), coin opposé au joueur, en poursuite (Noham)
+        self.monster = Monster(7.5, 7.5, ChaseState())
     
 
 
@@ -70,10 +74,13 @@ class Game:
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:    #si d ou fleche droite enfoncée
             self.player.turn(config.PLAYER_TURN_SPEED * dt)   # tourner vers la droite
 
+        # Le monstre agit après le joueur, avec sa position à jour (Noham)
+        self.monster.update(self.player, self.maze, dt)
+
     def draw(self) -> None:
         """Dessine l'image basse résolution, puis l'agrandit dans la fenêtre."""
         self.frame.fill((0, 0, 0))
         #render_walls(self.frame, self.maze, self.player)
-        draw_minimap(self.frame, self.maze, self.player)
+        draw_minimap(self.frame, self.maze, self.player, self.monster)
         pygame.transform.scale(self.frame, self.window.get_size(), self.window)
         pygame.display.flip()

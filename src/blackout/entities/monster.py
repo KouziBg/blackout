@@ -23,8 +23,8 @@ class Monster:
     path: list[tuple[int, int]] = field(default_factory=list)
 
     def update(self, player: Player, maze: Maze, dt: float) -> None:
-        """Met à jour l'état du monstre, puis le fait avancer."""
-        raise NotImplementedError
+        """Laisse l'état courant agir (déplacement compris), puis passe à l'état suivant."""
+        self.state = self.state.update(self, player, maze, dt)
 
     def can_see(self, player: Player, maze: Maze) -> bool:
         """Indique si aucun mur ne sépare le monstre du joueur, avec cast_ray."""
