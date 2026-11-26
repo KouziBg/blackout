@@ -18,8 +18,8 @@ def find_path(
     came_from = {start: None}
     heap = [(0, start)]
 
-    while heap != []:
-        priority, current = heapq.heappop(heap)
+    while heap:
+        _, current = heapq.heappop(heap)
 
         if current == goal:
             break
